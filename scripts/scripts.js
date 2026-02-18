@@ -50,6 +50,34 @@ function buildAutoBlocks(main) {
   }
 }
 
+const BLOCK_NAMES = ['header', 'hero', 'columns', 'cards', 'footer'];
+
+/**
+ * When content comes from a Doc as plain text, the first line of a section might be the block name
+ * (e.g. "Hero", "Cards") but not in a table, so EDS doesn't treat it as a block. Promote that
+ * first line to a block wrapper so decorateBlocks finds it and loads the right block.
+ */
+function promoteBlockNamesFromParagraphs(main) {
+  main.querySelectorAll(':scope > div.section').forEach((section) => {
+    const wrapper = section.querySelector(':scope > div');
+    if (!wrapper || wrapper.querySelector('div[class]')) return;
+    const first = wrapper.firstElementChild;
+    if (!first) return;
+    const text = (first.textContent || '').trim();
+    const blockName = BLOCK_NAMES.find((b) => text.toLowerCase() === b);
+    if (!blockName) return;
+    first.remove();
+    const blockDiv = document.createElement('div');
+    blockDiv.className = blockName;
+    while (wrapper.firstElementChild) {
+      const row = document.createElement('div');
+      row.appendChild(wrapper.firstElementChild);
+      blockDiv.appendChild(row);
+    }
+    wrapper.appendChild(blockDiv);
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -60,6 +88,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  promoteBlockNamesFromParagraphs(main);
   decorateBlocks(main);
 }
 

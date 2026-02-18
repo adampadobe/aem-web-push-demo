@@ -10,11 +10,12 @@ export default function decorate(block) {
   const heroContainer = document.createElement('div');
   heroContainer.className = 'hero-container';
   
-  // Background image
+  // Background image (from img element or from URL text in first row)
   if (imageRow) {
     const img = imageRow.querySelector('img');
-    if (img) {
-      heroContainer.style.backgroundImage = `url(${img.src})`;
+    const url = img?.src || (imageRow.textContent || '').trim();
+    if (url && (url.startsWith('http') || url.startsWith('//'))) {
+      heroContainer.style.backgroundImage = `url(${url})`;
     }
   }
   
