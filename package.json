@@ -1,0 +1,25 @@
+{
+  "name": "aem-web-push-demo",
+  "version": "1.0.0",
+  "description": "Adobe Journey Optimizer Web Push Notifications with AEM Edge Delivery Services",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8000 -o /push-demo.html",
+    "dev": "npx http-server -p 8000 -c-1",
+    "generate-vapid": "npx web-push generate-vapid-keys"
+  },
+  "keywords": [
+    "adobe",
+    "aem",
+    "edge-delivery-services",
+    "web-push",
+    "journey-optimizer",
+    "push-notifications"
+  ],
+  "author": "Adobe",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "web-push": "^3.6.7"
+  }
+}

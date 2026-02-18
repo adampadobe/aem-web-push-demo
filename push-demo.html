@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Push Notifications Demo - AEM Edge Delivery Services</title>
+  <meta name="description" content="Demo page for Adobe Journey Optimizer Web Push Notifications with AEM EDS">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="nav-wrapper">
+        <a href="/" class="logo">AEM Push Demo</a>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/push-demo">Push Demo</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Web Push Notifications Demo</h1>
+        <p>Test Adobe Journey Optimizer Web Push Notifications with AEM Edge Delivery Services</p>
+      </div>
+    </section>
+
+    <section class="push-controls">
+      <div class="container">
+        <div class="card">
+          <h2>Push Notification Controls</h2>
+          
+          <div class="status-display" id="status-display">
+            <div class="status-item">
+              <strong>Browser Support:</strong> <span id="browser-support">Checking...</span>
+            </div>
+            <div class="status-item">
+              <strong>Permission Status:</strong> <span id="permission-status">Checking...</span>
+            </div>
+            <div class="status-item">
+              <strong>Subscription Status:</strong> <span id="subscription-status">Checking...</span>
+            </div>
+            <div class="status-item">
+              <strong>AEP SDK Status:</strong> <span id="aep-status">Loading...</span>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button id="subscribe-btn" class="btn btn-primary">
+              Enable Push Notifications
+            </button>
+            <button id="unsubscribe-btn" class="btn btn-secondary" disabled>
+              Disable Push Notifications
+            </button>
+            <button id="test-notification-btn" class="btn btn-tertiary" disabled>
+              Show Test Notification
+            </button>
+          </div>
+
+          <div class="info-box" id="info-box" style="display: none;">
+            <p id="info-message"></p>
+          </div>
+
+          <div class="subscription-details" id="subscription-details" style="display: none;">
+            <h3>Subscription Details</h3>
+            <pre id="subscription-json"></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>How It Works</h2>
+          <ol>
+            <li>Click "Enable Push Notifications" to request permission</li>
+            <li>Grant notification permission in your browser</li>
+            <li>Your subscription is automatically registered with Adobe Experience Platform</li>
+            <li>Create a journey in Adobe Journey Optimizer to send push notifications</li>
+            <li>Receive notifications even when this page is closed</li>
+          </ol>
+
+          <h3>Next Steps in Journey Optimizer</h3>
+          <ol>
+            <li>Go to <strong>Journey Optimizer → Journeys</strong></li>
+            <li>Create a new journey with an event trigger</li>
+            <li>Add a <strong>Push notification</strong> action</li>
+            <li>Select your <strong>Web Push</strong> channel configuration</li>
+            <li>Compose your message and publish</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Adobe Experience Manager - Web Push Demo</p>
+    </div>
+  </footer>
+
+  <!-- Load scripts -->
+  <script type="module">
+    import { 
+      isPushSupported, 
+      getPermissionStatus,
+      subscribeToPushNotifications,
+      unsubscribeFromPushNotifications,
+      isSubscribed,
+      getSubscriptionDetails,
+      showTestNotification
+    } from './scripts/push-notifications.js';
+
+    // DOM elements
+    const subscribeBtn = document.getElementById('subscribe-btn');
+    const unsubscribeBtn = document.getElementById('unsubscribe-btn');
+    const testNotificationBtn = document.getElementById('test-notification-btn');
+    const infoBox = document.getElementById('info-box');
+    const infoMessage = document.getElementById('info-message');
+    const subscriptionDetailsEl = document.getElementById('subscription-details');
+    const subscriptionJsonEl = document.getElementById('subscription-json');
+
+    // Status display elements
+    const browserSupportEl = document.getElementById('browser-support');
+    const permissionStatusEl = document.getElementById('permission-status');
+    const subscriptionStatusEl = document.getElementById('subscription-status');
+    const aepStatusEl = document.getElementById('aep-status');
+
+    // Update UI based on current status
+    async function updateUI() {
+      // Browser support
+      const supported = isPushSupported();
+      browserSupportEl.textContent = supported ? '✅ Supported' : '❌ Not Supported';
+      browserSupportEl.className = supported ? 'status-success' : 'status-error';
+
+      if (!supported) {
+        subscribeBtn.disabled = true;
+        return;
+      }
+
+      // Permission status
+      const permission = getPermissionStatus();
+      permissionStatusEl.textContent = permission === 'granted' ? '✅ Granted' : 
+                                       permission === 'denied' ? '❌ Denied' : 
+                                       '⚠️ Not Requested';
+      permissionStatusEl.className = permission === 'granted' ? 'status-success' : 
+                                     permission === 'denied' ? 'status-error' : 
+                                     'status-warning';
+
+      // Subscription status
+      const subscribed = await isSubscribed();
+      subscriptionStatusEl.textContent = subscribed ? '✅ Active' : '❌ Not Subscribed';
+      subscriptionStatusEl.className = subscribed ? 'status-success' : 'status-error';
+
+      // Update button states
+      if (subscribed) {
+        subscribeBtn.disabled = true;
+        unsubscribeBtn.disabled = false;
+        testNotificationBtn.disabled = false;
+
+        // Show subscription details
+        const details = await getSubscriptionDetails();
+        if (details) {
+          subscriptionDetailsEl.style.display = 'block';
+          subscriptionJsonEl.textContent = JSON.stringify(details, null, 2);
+        }
+      } else {
+        subscribeBtn.disabled = permission === 'denied';
+        unsubscribeBtn.disabled = true;
+        testNotificationBtn.disabled = true;
+        subscriptionDetailsEl.style.display = 'none';
+      }
+    }
+
+    // Show info message
+    function showInfo(message, type = 'info') {
+      infoMessage.textContent = message;
+      infoBox.className = `info-box info-${type}`;
+      infoBox.style.display = 'block';
+      
+      setTimeout(() => {
+        infoBox.style.display = 'none';
+      }, 5000);
+    }
+
+    // Subscribe button click
+    subscribeBtn.addEventListener('click', async () => {
+      subscribeBtn.disabled = true;
+      subscribeBtn.textContent = 'Subscribing...';
+
+      const result = await subscribeToPushNotifications();
+
+      if (result.success) {
+        showInfo('✅ Successfully subscribed to push notifications!', 'success');
+      } else {
+        if (result.reason === 'permission_denied') {
+          showInfo('❌ Permission denied. Please allow notifications in your browser settings.', 'error');
+        } else {
+          showInfo(`❌ Failed to subscribe: ${result.reason}`, 'error');
+        }
+      }
+
+      subscribeBtn.textContent = 'Enable Push Notifications';
+      await updateUI();
+    });
+
+    // Unsubscribe button click
+    unsubscribeBtn.addEventListener('click', async () => {
+      unsubscribeBtn.disabled = true;
+      unsubscribeBtn.textContent = 'Unsubscribing...';
+
+      const result = await unsubscribeFromPushNotifications();
+
+      if (result.success) {
+        showInfo('✅ Successfully unsubscribed from push notifications', 'success');
+      } else {
+        showInfo(`❌ Failed to unsubscribe: ${result.reason}`, 'error');
+      }
+
+      unsubscribeBtn.textContent = 'Disable Push Notifications';
+      await updateUI();
+    });
+
+    // Test notification button click
+    testNotificationBtn.addEventListener('click', async () => {
+      try {
+        await showTestNotification();
+        showInfo('✅ Test notification sent!', 'success');
+      } catch (error) {
+        showInfo(`❌ Failed to show notification: ${error.message}`, 'error');
+      }
+    });
+
+    // Listen for AEP ready event
+    window.addEventListener('aep-ready', () => {
+      aepStatusEl.textContent = '✅ Ready';
+      aepStatusEl.className = 'status-success';
+      updateUI();
+    });
+
+    // Initial UI update
+    setTimeout(() => {
+      const aepReady = typeof window.alloy === 'function';
+      aepStatusEl.textContent = aepReady ? '✅ Ready' : '⏳ Loading...';
+      aepStatusEl.className = aepReady ? 'status-success' : 'status-warning';
+      updateUI();
+    }, 1000);
+  </script>
+</body>
+</html>
