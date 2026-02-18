@@ -19,6 +19,7 @@
   "author": "Adobe",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@adobe/aem-cli": "^16.16.21",
     "http-server": "^14.1.1",
     "web-push": "^3.6.7"
   }
