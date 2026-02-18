@@ -1,0 +1,59 @@
+---
+Header
+---
+---
+Hero
+---
+https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1600&h=900&fit=crop
+Congrats, you are ready to go!
+Your forked repo is set up as an AEM Project, and you are ready to start developing.
+[Live](https://main--aem-web-push-demo--adampadobe.aem.live/)
+
+---
+
+The content you are looking at is served from this Google Drive. Adjust the fstab.yaml to point to a folder either in your SharePoint or your Google Drive that you shared with AEM. See the full tutorial here: https://www.aem.live/developer/tutorial
+
+## This is another headline here for more content
+
+---
+Columns
+---
+Columns block
+• One
+• Two
+• Three
+[Live](#)
+Or you can just view the preview
+[Preview](#)
+
+## Boilerplate Highlights?
+
+Find some of our favorite staff picks below.
+
+---
+Cards
+---
+https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=600
+**Unmatched speed**
+AEM is the fastest way to publish, create, and serve websites.
+https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600
+**Content at scale**
+AEM allows you to publish more content in shorter time with smaller teams.
+https://images.unsplash.com/photo-1614064548685-7f89b31c0f61?w=600
+**Uncertainty eliminated**
+Preview content at 100% fidelity, get predictable content velocity, and shorten project durations.
+https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600
+**The low-code way to developer productivity**
+Say goodbye to complex APIs spanning multiple languages. Anyone with a little bit of HTML, CSS, and JS can build a site on AEM.
+https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600
+**Headless is here**
+Go directly from Microsoft Excel or Google Sheets to the web in mere seconds. Sanitize and collect form data at extreme scale with AEM Forms.
+https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600
+**Peak performance**
+Use AEM's serverless architecture to meet any traffic need. Use AEM's PageSpeed Insights GitHub action to evaluate every Pull-Request for Lighthouse Score.
+
+---
+Footer
+---
+Copyright © 2023 Adobe. All rights reserved.
+Privacy / Terms of Use / Cookie preferences / Do not sell my personal information / AdChoices

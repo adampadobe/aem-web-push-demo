@@ -1,5 +1,7 @@
 # Config files with credentials
 scripts/config.js
+credentials/
+!credentials/.gitkeep
 
 # Dependencies
 node_modules/

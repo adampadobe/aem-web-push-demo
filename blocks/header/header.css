@@ -33,6 +33,18 @@
   opacity: 0.8;
 }
 
+.header-search {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.header-search-icon {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
 @media (max-width: 768px) {
   .header-wrapper {
     flex-direction: column;

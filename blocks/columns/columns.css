@@ -1,0 +1,53 @@
+/* Columns Block - two-column layout */
+.columns-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  align-items: start;
+}
+
+.columns-col {
+  min-width: 0;
+}
+
+.columns-col h2,
+.columns-col h3 {
+  margin-top: 0;
+  color: #2c2c2c;
+}
+
+.columns-col .button,
+.columns-col a.button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin: 1rem 0;
+  background: #1473e6;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.columns-col .button.secondary,
+.columns-col a.button.preview {
+  background: #6e6e6e;
+}
+
+.columns-col img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .columns-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 0 1rem;
+  }
+}

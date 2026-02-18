@@ -5,7 +5,12 @@
   "main": "index.html",
   "scripts": {
     "start": "npx http-server -p 8000 -o /push-demo.html",
-    "dev": "npx http-server -p 8000 -c-1",
+    "dev": "npx aem up",
+    "deploy": "bash scripts/deploy-from-cursor.sh",
+    "push-content": "node scripts/google-drive-sync.js",
+    "deploy:full": "npm run push-content && npm run deploy",
+    "google-login": "node scripts/google-oauth-login.js",
+    "copy-credentials": "node scripts/copy-google-credentials-from.js",
     "generate-vapid": "npx web-push generate-vapid-keys"
   },
   "keywords": [
@@ -22,5 +27,9 @@
     "@adobe/aem-cli": "^16.16.21",
     "http-server": "^14.1.1",
     "web-push": "^3.6.7"
+  },
+  "dependencies": {
+    "googleapis": "^171.4.0",
+    "open": "^11.0.0"
   }
 }

@@ -7,14 +7,18 @@ export default async function decorate(block) {
   block.innerHTML = `
     <div class="header-wrapper">
       <div class="header-brand">
-        <a href="/">AEM Web Push Demo</a>
+        <a href="/">Boilerplate</a>
       </div>
       <nav class="header-nav">
         <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/push-demo">Push Demo</a></li>
+          <li><a href="/">Example Content</a></li>
+          <li><a href="/#getting-started">Getting Started</a></li>
+          <li><a href="https://www.aem.live/developer/tutorial">Documentation</a></li>
         </ul>
       </nav>
+      <div class="header-search" aria-label="Search">
+        <span class="header-search-icon">⌕</span>
+      </div>
     </div>
   `;
 }
